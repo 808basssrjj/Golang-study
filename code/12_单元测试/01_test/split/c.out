@@ -1,0 +1,4 @@
+mode: set
+split/spilt.go:6.42,8.15 2 1
+split/spilt.go:14.2,15.8 2 1
+split/spilt.go:8.15,13.3 3 1
