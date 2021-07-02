@@ -21,7 +21,7 @@ func main() {
 	// 开启goroutine从ch1中接收值，并将该值的平方发送到ch2中
 	go func() {
 		for {
-			i, ok := <-ch1 // 1.通道关闭后再取值ok=false
+			i, ok := <-ch1 // 1.取值  通道关闭后再取值ok=false
 			if !ok {
 				break
 			}
@@ -31,7 +31,7 @@ func main() {
 	}()
 
 	// 在主goroutine中从ch2中接收值打印
-	for i := range ch2 { // 2.通道关闭后会退出for range循环
+	for i := range ch2 { // 2.取值 通道关闭后会退出for range循环
 		fmt.Println(i)
 	}
 

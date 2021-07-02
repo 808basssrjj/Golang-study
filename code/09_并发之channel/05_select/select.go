@@ -3,8 +3,10 @@ package main
 import "fmt"
 
 func main() {
+	// 在某些场景下我们需要同时从多个通道接收数据。
 	// select的使用类似于switch语句，它有一系列case分支和一个默认的分支。每个case会对应一个通道的通信（接收或发送）过程。
 	// select会一直等待，直到某个case的通信操作完成时，就会执行case分支对应的语句
+
 	ch := make(chan int, 1)
 	// ch := make(chan int, 10)
 	for i := 0; i < 10; i++ {

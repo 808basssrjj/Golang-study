@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+// 在工作中我们通常会使用可以指定启动的goroutine数量–worker pool模式，控制goroutine的数量，防止goroutine泄漏和暴涨。
+
 func worker(id int, jobs <-chan int, results chan<- int) {
 	for j := range jobs {
 		fmt.Printf("worker:%d start job:%d\n", id, j)
@@ -28,6 +30,7 @@ func main() {
 	close(jobs)
 	// 输出结果
 	for a := 1; a <= 5; a++ {
-		<-results
+		res := <-results
+		fmt.Println(res)
 	}
 }
