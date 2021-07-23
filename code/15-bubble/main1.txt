@@ -1,0 +1,125 @@
+// package main1
+
+// import (
+// 	"net/http"
+
+// 	"github.com/gin-gonic/gin"
+// 	"github.com/jinzhu/gorm"
+// 	_ "github.com/jinzhu/gorm/dialects/mysql"
+// )
+
+// type Todo struct {
+// 	ID     int    `json:"id"`
+// 	Title  string `json:"title"`
+// 	Status bool   `json:"status"`
+// }
+
+// var (
+// 	DB *gorm.DB
+// )
+
+// // 连接数据库
+// func initMysql() (err error) {
+// 	dsn := "root:123456@(127.0.0.1:3306)/bubble?charset=utf8mb4&parseTime=True&loc=Local"
+// 	DB, err = gorm.Open("mysql", dsn)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+// func main() {
+// 	err := initMysql()
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	defer DB.Close()
+// 	// 模型绑定
+// 	DB.AutoMigrate(&Todo{})
+
+// 	// 创建一个默认的路由引擎
+// 	r := gin.Default()
+// 	// 加载路径
+// 	r.LoadHTMLGlob("templates/*")
+// 	// 静态资源
+// 	r.Static("/static", "static")
+
+// 	r.GET("/", func(c *gin.Context) {
+// 		c.HTML(http.StatusOK, "index.html", gin.H{})
+// 	})
+
+// 	//Api
+// 	v1Group := r.Group("v1")
+// 	{
+// 		// 添加
+// 		v1Group.POST("/todo", func(c *gin.Context) {
+// 			// 1.从请求中获取数据
+// 			var todo Todo
+// 			_ = c.BindJSON(&todo)
+// 			// 2.加入数据库
+// 			if err = DB.Create(&todo).Error; err != nil {
+// 				// 3.返回响应
+// 				c.JSON(http.StatusOK, gin.H{"errOR": err.Error()}) // 插入失败
+// 			} else {
+// 				c.JSON(http.StatusOK, todo) // 插入成功
+// 			}
+// 		})
+
+// 		// 查看所有
+// 		v1Group.GET("/todo", func(c *gin.Context) {
+// 			var todos []Todo
+// 			if err = DB.Find(&todos).Error; err != nil {
+// 				c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+// 			} else {
+// 				c.JSON(http.StatusOK, todos)
+// 			}
+// 		})
+
+// 		// 查看某个
+// 		v1Group.GET("/todo/:id", func(c *gin.Context) {
+
+// 		})
+
+// 		// 修改某个
+// 		v1Group.PUT("/todo/:id", func(c *gin.Context) {
+// 			id, ok := c.Params.Get("id")
+// 			if !ok {
+// 				c.JSON(http.StatusOK, gin.H{"error": "无效的id"})
+// 				return
+// 			}
+// 			var todo Todo
+// 			if err = DB.Where("id=?", id).First(&todo).Error; err != nil {
+// 				// 数据不存在
+// 				c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+// 				return
+// 			}
+
+// 			// 修改
+// 			c.BindJSON(&todo)
+// 			// if err = DB.Model(&todo).Update("status", true).Error; err != nil {
+// 			if err = DB.Save(&todo).Error; err != nil {
+// 				c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+// 				return
+// 			} else {
+// 				c.JSON(http.StatusOK, todo)
+// 			}
+// 		})
+
+// 		// 删除某个
+// 		v1Group.DELETE("/todo/:id", func(c *gin.Context) {
+// 			id, ok := c.Params.Get("id")
+// 			if !ok {
+// 				c.JSON(http.StatusOK, gin.H{"error": "无效的id"})
+// 				return
+// 			}
+// 			if err = DB.Where("id=?", id).Delete(&Todo{}).Error; err != nil {
+// 				c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+// 				return
+// 			} else {
+// 				c.JSON(http.StatusOK, gin.H{"msg": "删除成功!"})
+// 			}
+// 		})
+// 	}
+
+// 	r.Run(":7070")
+// }
