@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 //闭包指的是一个函数和与其相关的引用环境组合而成的实体。简单来说，闭包=函数+引用环境
 //匿名函数内部使用外部变量
@@ -10,8 +13,6 @@ func adder(x int) func(int) int {
 		return x
 	}
 }
-
-
 
 // 实际应用：把f2传入f1中执行
 func f1(f func()) {
@@ -30,6 +31,17 @@ func f3(f func(int, int), x, y int) func() {
 	}
 }
 
+
+// 传入一个后缀,返回带后缀的文件名
+func makeSuffix(suffix string) func(string) string {
+	return func(filename string) string {
+		if strings.HasSuffix(filename, suffix) {
+			return filename
+		}
+		return filename + suffix
+	}
+}
+
 func main() {
 	ret := adder(100) //ret是adder()返回的函数  可以ret()调用
 	ret2 := ret(200)
@@ -38,4 +50,7 @@ func main() {
 	res := f3(f2, 100, 200)
 	// res()
 	f1(res)
+
+	mkJpg := makeSuffix(".jpg")
+	fmt.Println(mkJpg("aabb.png"))
 }
