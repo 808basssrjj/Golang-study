@@ -48,4 +48,25 @@ func main() {
 
 	// 7.join操作
 	fmt.Println(strings.Join(ret, "+"))
+
+	// 8.统计字串出现的次数
+	fmt.Println(strings.Count("seafood", "o"))
+
+	// 9.不区分大小写比较
+	fmt.Println(strings.EqualFold("golang", "GOLANg"))
+
+	// 10.替换  n=-1代表全部替换
+	s3 := "go go hhh"
+	fmt.Println(strings.Replace(s3, "go", "golang", -1))
+
+	// 11.大小写转换
+	fmt.Println(strings.ToLower("GOLANG"))
+	fmt.Println(strings.ToUpper("golang"))
+
+	// 12.去除左右两边空格
+	fmt.Println(strings.TrimSpace(" h sd hada "))
+	// 13.去掉左右/左/右指定字符
+	fmt.Println(strings.Trim(",golang,", ","))
+	fmt.Println(strings.TrimLeft(",golang,", ","))
+	fmt.Println(strings.TrimRight(",golang,", ","))
 }
