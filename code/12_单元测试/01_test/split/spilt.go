@@ -16,3 +16,13 @@ func Split(s, sep string) (ret []string) {
 	ret = append(ret, s)
 	return
 }
+
+
+// 测试单个文件
+// go test -v xx_test.go xx.go
+
+// 测试单个方法
+// go test -v -test.run xxx
+
+// 测试覆盖率
+// go test -cover
