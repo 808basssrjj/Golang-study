@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 )
 
@@ -17,7 +18,7 @@ func useBufio() {
 
 // bufio读取
 func main() {
-	打开文件
+	//打开文件
 	fileObj, err := os.Open("./01_file.go")
 	if err != nil {
 		fmt.Println("open file err", err)
