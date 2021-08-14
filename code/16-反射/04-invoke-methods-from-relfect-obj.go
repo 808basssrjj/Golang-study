@@ -20,6 +20,7 @@ func main() {
 	methodV := v.MethodByName("DoHomework")
 	if methodV.IsValid() {
 		in := []reflect.Value{reflect.ValueOf(55)}
-		methodV.Call(in)
+		methodV.Call(in)  //调用方法
 	}
+	// v.Method(0).Call(in)
 }
