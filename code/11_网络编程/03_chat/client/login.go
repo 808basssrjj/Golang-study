@@ -1,0 +1,64 @@
+package main
+
+import (
+	"encoding/binary"
+	"encoding/json"
+	"fmt"
+	message "go_code/海量用户通讯系统/common"
+	"net"
+	"time"
+)
+
+// login 登录验证
+func login(id int, pwd string) (err error) {
+	//fmt.Printf("id:%d password:%s\n",id,pwd)
+	//return nil
+
+	// 1.连接客户端
+	conn, err := net.Dial("tcp", "127.0.0.1:8889")
+	if err != nil {
+		fmt.Println("dial failed, err:", err)
+		return
+	}
+	defer conn.Close()
+
+	// 2.通过conn向客户端发送信息
+	var msg message.Message
+	loginMsg := message.LoginMse{UserId: id, UserPwd: pwd}
+	data, err := json.Marshal(loginMsg) //序列化
+	if err != nil {
+		fmt.Println("json marshal failed")
+		return
+	}
+	msg.Data = string(data) //序列化后赋给meg
+
+	// 序列化msg
+	data, err = json.Marshal(msg)
+	if err != nil {
+		fmt.Println("json marshal failed")
+		return
+	}
+
+	// 发送data
+	// 先发送长度 要切片
+	pgkLen := uint32(len(data))
+	var buf [4]byte
+	binary.BigEndian.PutUint32(buf[:4], pgkLen)
+	n, err := conn.Write(buf[:4]) //发送长度
+	if n != 4 || err != nil {
+		fmt.Println("conn.Write(bytes) failed", err)
+		return
+	}
+	fmt.Printf("客户端发送数据的长度%v\n 内容是%v\n",len(data), string(data))
+
+	// 发送消息本身
+	_, err = conn.Write(data) //发送长度
+	if err != nil {
+		fmt.Println("conn.Write(data) failed", err)
+		return
+	}
+	time.Sleep(5*time.Second)
+	// 处理服务器返回的消息
+
+	return nil
+}
