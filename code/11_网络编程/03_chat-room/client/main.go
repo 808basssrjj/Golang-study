@@ -47,12 +47,12 @@ func main() {
 		_, _ = fmt.Scanln(&userId)
 		fmt.Println("请输入用户密码")
 		_, _ = fmt.Scanln(&userPwd)
-		err := login(userId, userPwd)
-		if err != nil {
-			fmt.Println("login failed error:", err)
-		} else {
-			fmt.Println("登录成功!")
-		}
+		_ = login(userId, userPwd)
+		// if err != nil {
+		// 	fmt.Println("login failed error:", err)
+		// } else {
+		// 	fmt.Println("登录成功!")
+		// }
 	} else if key == 2 {
 		// 2.用户注册
 	}
